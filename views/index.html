@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chat node</title>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.min.js"></script>
+</head>
+<body>
+	<h1>Chat</h1>
+
+	<input type="text" placeholder="Write here">
+	<button>Send</button>
+	<ul>
+		
+	</ul>
+	<script>
+		var socket = io();
+
+		function send(){
+			var _v = $('input').val();
+			socket.emit('send', _v);
+			$('input').val('');
+		}
+
+		$(function(){
+			$('button').click(send);
+		});
+
+		document.addEventListener('keyup', function(e){
+			if (e.keyCode === 13) send();
+		});
+
+		socket.on('receive', function(msg){
+			$('ul').prepend('<li>' + msg + '</li>');
+		});
+
+
+	</script>
+</body>
+</html>
